@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>哈哈哈</title>
+	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="640" height="1136"></canvas>
+
+<script src="./cocos2d-js-v3.13.js"></script>
+<script>
+	window.onload = function(){
+		var pi = "data:image/png;base64,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";
+		var shuo = "data:image/png;base64,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";
+
+		var pipishuo = [pi, pi, shuo],
+			piLength = pipishuo.length,
+			piOffset = 0;
+
+		function generateWord() {
+			if (piOffset >= piLength) piOffset = 0;
+			var newImage = cc.newElement("IMG");
+			newImage.setAttribute("src", pipishuo[piOffset++]);
+
+			var texture2d = new cc.Texture2D();
+			texture2d.initWithElement(newImage);
+			texture2d.handleLoadedTexture();
+
+			return texture2d;
+		}
+
+		cc.game.onStart = function(){
+//			cc.textureCache.cacheImage("fucku", newImage);
+
+			//屏幕适配
+			cc.view.setDesignResolutionSize(640, 1136, cc.ResolutionPolicy.SHOW_ALL);
+
+			//load resources
+			cc.LoaderScene.preload(["HelloWorld.png", "block.png"], function () {
+				var SPRITE_WIDTH  = 64;
+				var SPRITE_HEIGHT = 64;
+//				var DEBUG_NODE_SHOW = true;
+				var DEBUG_NODE_SHOW = false;
+
+				var MyLayer = cc.Layer.extend({
+					space: null,
+					ctor: function () {
+						this._super();
+
+						this.initPhysics();
+
+						this.scheduleUpdate();
+
+						var size = cc.director.getWinSize();
+						/*var sprite = cc.Sprite.create("HelloWorld.png");
+						sprite.setPosition(size.width / 2, size.height / 2);
+						sprite.setScale(0.8);
+						this.addChild(sprite, 0);
+
+						var label = cc.LabelTTF.create("Hello World", "Arial", 40);
+						label.setPosition(size.width / 2, size.height / 2);
+						this.addChild(label, 1);*/
+					},
+					onEnter: function () {
+						this._super();
+						cc.log("onEnter");
+
+						cc.eventManager.addListener({
+							event: cc.EventListener.TOUCH_ONE_BY_ONE,
+							onTouchBegan: this.onTouchBegan
+						}, this);
+					},
+					onTouchBegan: function (touch, event) {
+						cc.log("onTouchBegan");
+
+						var target = event.getCurrentTarget();
+						var location = touch.getLocation();
+						target.addNewSpriteAtPosition(location);
+						return false;
+					},
+					initPhysics: function () {
+						var winSize = cc.director.getWinSize();
+
+						this.space = new cp.Space();
+						this.setupDebugNode();
+
+						this.space.gravity = cp.v(0, -100);
+						var staticBody = this.space.staticBody;
+
+						var walls = [
+							new cp.SegmentShape(staticBody, cp.v(0, 0), cp.v(winSize.width, 0), 0),
+							new cp.SegmentShape(staticBody, cp.v(0, winSize.height), cp.v(winSize.width, winSize.height), 0),
+							new cp.SegmentShape(staticBody, cp.v(0, 0), cp.v(0, winSize.height), 0),
+							new cp.SegmentShape(staticBody, cp.v(winSize.width, 0), cp.v(winSize.width, winSize.height), 0)
+						];
+						for (var i = 0; i < walls.length; i++) {
+							var shape = walls[i];
+							shape.setElasticity(1);
+							shape.setFriction(1);
+							this.space.addStaticShape(shape);
+						}
+					},
+					addNewSpriteAtPosition: function (p) {
+						cc.log("add sprite");
+
+						var body = new cp.Body(1, cp.momentForBox(1, SPRITE_WIDTH, SPRITE_HEIGHT));
+						body.setPos(p);
+						this.space.addBody(body);
+
+						var shape = new cp.BoxShape(body, SPRITE_WIDTH, SPRITE_HEIGHT);
+						shape.setElasticity(0.5);
+						shape.setFriction(0.5);
+						this.space.addShape(shape);
+
+						var sprite = new cc.PhysicsSprite(generateWord());
+//						console.log(sprite);
+//						var sprite = new cc.Sprite("block.png");
+						sprite.setBody(body);
+//						sprite.setPosition(cc.p(p.x, p.y));
+						this.addChild(sprite);
+						sprite.runAction(cc.moveBy(2, cc.p(0, 400)));
+					},
+					setupDebugNode: function () {
+						this._debugNode = new cc.PhysicsDebugNode(this.space);
+						this._debugNode.visible = DEBUG_NODE_SHOW;
+						this.addChild(this._debugNode);
+					},
+					update: function (dt) {
+						var timeStep = 0.03;
+						this.space.step(timeStep);
+					}
+				});
+
+				var MyScene = cc.Scene.extend({
+					onEnter:function () {
+						this._super();
+						var layer = new MyLayer();
+						this.addChild(layer);
+					}
+				});
+				cc.director.runScene(new MyScene());
+			}, this);
+		};
+		cc.game.run("gameCanvas");
+	};
+</script>
+</body>
+</html>
