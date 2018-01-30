@@ -20,7 +20,7 @@
 		return vars;
 	}
 
-	var content = getUrlVars.c;
+	var content = getUrlVars().c;
 	if (content && content.length > 0) {
 		$.post('/php/eggComment', {content: content}, function () {
 			toDw();
