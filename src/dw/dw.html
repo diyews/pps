@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>哈哈哈</title>
+	<style>
+		@font-face {
+			font-family: 'NaiYou';
+			src: url('css/font/58c79c34f629e8111c674744.gif?r=37869004460');
+			src: url('css/font/58c79c34f629e8111c674744.gif?r=37869004460?#iefix') format('embedded-opentype'), url('css/font/58c79c34f629e8111c674744.bmp?r=37869004460') format('woff'), url('css/font/58c79c34f629e8111c674744.jpg?r=37869004460') format('truetype'), url('#NaiYou') format('svg');
+		}
+
+		html, body {
+			width: 100%;
+			height: 100%;
+		}
+
+		body {
+			font-family: NaiYou;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="640" height="1136"></canvas>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="./cocos2d-js-v3.13.js"></script>
+<script>
+	window.onload = function(){
+		var pipishuo = [],
+//			piLength = pipishuo.length,
+			piOffset = 0,
+			textCanvas = document.createElement("CANVAS"),
+			textCtx  = textCanvas.getContext("2d"),
+			fontSize = 64;
+
+		textCanvas.height = fontSize;
+		textCanvas.width  = fontSize;
+		textCtx.font = fontSize + "px NaiYou";
+		
+		function textToBase64 (t) {
+			var text  = t || "国体制",
+				lenth = text.length;
+
+			piOffset = 0;
+			pipishuo = [];
+			for (var i = 0; i < lenth; i++) {
+				textCtx.clearRect(0, 0, 64, 64);
+				textCtx.fillText(text[i], 0, 54);
+				pipishuo.push(textCanvas.toDataURL("image/png"));
+			}
+		}
+
+		function generateWord() {
+			var piLength = pipishuo.length;
+			if (piOffset >= piLength) piOffset = 0;
+			var newImage = cc.newElement("IMG");
+			newImage.setAttribute("src", pipishuo[piOffset++]);
+
+			var texture2d = new cc.Texture2D();
+			texture2d.initWithElement(newImage);
+			texture2d.handleLoadedTexture();
+
+			return texture2d;
+		}
+
+		cc.game.onStart = function(){
+//			cc.textureCache.cacheImage("fucku", newImage);
+
+			//屏幕适配
+			cc.view.setDesignResolutionSize(640, 1136, cc.ResolutionPolicy.SHOW_ALL);
+
+			//load resources
+			cc.LoaderScene.preload(["HelloWorld.png", "block.png"], function () {
+				var SPRITE_WIDTH  = 64;
+				var SPRITE_HEIGHT = 64;
+//				var DEBUG_NODE_SHOW = true;
+				var DEBUG_NODE_SHOW = false;
+
+				var MyLayer = cc.Layer.extend({
+					space: null,
+					ctor: function () {
+						this._super();
+
+						this.initPhysics();
+
+						this.scheduleUpdate();
+
+						var size = cc.director.getWinSize();
+						/*var sprite = cc.Sprite.create("HelloWorld.png");
+						sprite.setPosition(size.width / 2, size.height / 2);
+						sprite.setScale(0.8);
+						this.addChild(sprite, 0);
+
+						var label = cc.LabelTTF.create("Hello World", "Arial", 40);
+						label.setPosition(size.width / 2, size.height / 2);
+						this.addChild(label, 1);*/
+					},
+					onEnter: function () {
+						this._super();
+						cc.log("onEnter");
+
+						cc.eventManager.addListener({
+							event: cc.EventListener.TOUCH_ONE_BY_ONE,
+							onTouchBegan: this.onTouchBegan
+						}, this);
+					},
+					onTouchBegan: function (touch, event) {
+						cc.log("onTouchBegan");
+
+						var target = event.getCurrentTarget();
+						var location = touch.getLocation();
+						target.addNewSpriteAtPosition(location);
+						return false;
+					},
+					initPhysics: function () {
+						var winSize = cc.director.getWinSize();
+
+						this.space = new cp.Space();
+						this.setupDebugNode();
+
+						this.space.gravity = cp.v(0, -100);
+						var staticBody = this.space.staticBody;
+
+						var walls = [
+							new cp.SegmentShape(staticBody, cp.v(0, 0), cp.v(winSize.width, 0), 0),
+							new cp.SegmentShape(staticBody, cp.v(0, winSize.height), cp.v(winSize.width, winSize.height), 0),
+							new cp.SegmentShape(staticBody, cp.v(0, 0), cp.v(0, winSize.height), 0),
+							new cp.SegmentShape(staticBody, cp.v(winSize.width, 0), cp.v(winSize.width, winSize.height), 0)
+						];
+						for (var i = 0; i < walls.length; i++) {
+							var shape = walls[i];
+							shape.setElasticity(1);
+							shape.setFriction(1);
+							this.space.addStaticShape(shape);
+						}
+					},
+					addNewSpriteAtPosition: function (p) {
+						cc.log("add sprite");
+
+						var body = new cp.Body(1, cp.momentForBox(1, SPRITE_WIDTH, SPRITE_HEIGHT));
+						body.setPos(p);
+						this.space.addBody(body);
+
+						var shape = new cp.BoxShape(body, SPRITE_WIDTH, SPRITE_HEIGHT);
+						shape.setElasticity(0.9);
+						shape.setFriction(0.2);
+						this.space.addShape(shape);
+
+						var sprite = new cc.PhysicsSprite(generateWord());
+//						console.log(sprite);
+//						var sprite = new cc.Sprite("block.png");
+						sprite.setBody(body);
+//						sprite.setPosition(cc.p(p.x, p.y));
+						this.addChild(sprite);
+						sprite.runAction(cc.moveBy(2, cc.p(Math.random() * 300 - 150, 400)));
+					},
+					setupDebugNode: function () {
+						this._debugNode = new cc.PhysicsDebugNode(this.space);
+						this._debugNode.visible = DEBUG_NODE_SHOW;
+						this.addChild(this._debugNode);
+					},
+					update: function (dt) {
+						var timeStep = 0.03;
+						this.space.step(timeStep);
+					}
+				});
+
+				var MyScene = cc.Scene.extend({
+					onEnter:function () {
+						this._super();
+						var layer = new MyLayer();
+						this.addChild(layer);
+					}
+				});
+				cc.director.runScene(new MyScene());
+			}, this);
+		};
+
+		$.get('/php/eggComment?limit=1', function (d) {
+			var data = JSON.parse(d);
+			textToBase64(data[0].content);
+			cc.game.run("gameCanvas");
+		});
+	};
+</script>
+</body>
+</html>
