@@ -183,8 +183,8 @@
 		};
 
 		var _limit = getUrlVars().l || 1;
-		$.get('/php/eggComment?limit=' + _limit, function (d) {
-			var data = JSON.parse(d);
+		$.get('/php/eggComment?limit=' + _limit, function (data) {
+
 			var content = "";
 			for (var i = 0, length = data.length; i < length; i++) {
 				content += data[i].content;
