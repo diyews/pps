@@ -20,8 +20,9 @@
 		return vars;
 	}
 
-	var content = decodeURI(getUrlVars().c);
+	var content = getUrlVars().c;
 	if (content && content.length > 0) {
+		content = decodeURI(content);
 		$.post('/php/eggComment', {content: content}, function () {
 			toDw();
 		});
