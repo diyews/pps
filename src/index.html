@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
 	<meta charset="UTF-8">
-	<title>s</title>
+	<title>送你的</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 	<style>
 		html, body {
@@ -25,6 +25,16 @@
 <canvas id="myCanvas" width="640" height="1136"></canvas>
 <script src="https://unpkg.com/curvejs@0.3.3/dist/curve.min.js"></script>
 <script>
+	//shakeHandler
+	var curveActingFlag = false;
+	var hasShaked = false;
+	function shakeHandler() {
+		if (curveActingFlag) return;
+		hasShaked = true;
+		makeWord();
+//		alert("你中奖啦！");  // Do something
+	}
+
 	(function () {
 		//运动事件监听
 		if (window.DeviceMotionEvent) {
@@ -36,7 +46,7 @@
 		//获取加速度信息
 		//通过监听上一步获取到的x, y, z 值在一定时间范围内的变化率，进行设备是否有进行晃动的判断。
 		//而为了防止正常移动的误判，需要给该变化率设置一个合适的临界值。
-		var SHAKE_THRESHOLD = 4000;
+		var SHAKE_THRESHOLD = 400;
 		var last_update = 0;
 		var x, y, z, last_x = 0, last_y = 0, last_z = 0;
 
@@ -53,6 +63,7 @@
 				if (speed > SHAKE_THRESHOLD) {
 					shakeHandler();
 				}
+				console.log(speed)
 				last_x = x;
 				last_y = y;
 				last_z = z;
@@ -63,16 +74,16 @@
 <script>
 	function dance(child, scale) {
 		child.scaleTo(scale, 200, {
-			center: [85,80],
+			center: [485, 380],
 			end: function () {
 				var that = this,
-						delay;
+					delay;
 				if (scale == 1.25) {
 					delay = 30
 				} else delay = 500
 				setTimeout(function () {
 					dance(that, scale === 1.25 ? 0.8 : 1.25)
-				},delay)
+				}, delay)
 
 			}
 		})
@@ -80,53 +91,53 @@
 </script>
 <script>
 	var canvasWidth = 640,
-			canvasHeight = 1136;
+		canvasHeight = 1136;
 	var Stage = curvejs.Stage,
-			Curve = curvejs.Curve,
-			motion = curvejs.motion,
-			canvas = document.getElementById('myCanvas'),
-			stage = new Stage(canvas),
-			rd = function () {
-				return -2 + Math.random() * 2
-			}
+		Curve = curvejs.Curve,
+		motion = curvejs.motion,
+		canvas = document.getElementById('myCanvas'),
+		stage = new Stage(canvas),
+		rd = function () {
+			return -2 + Math.random() * 2
+		}
 
 	var dataset = {
 		w: [
-			/*{
-				color: '#00FF00',
+			{
+				color: '#b133ff',
 				points: [-10, 0, -6, 3, -3, 3, -1, 0, 1, 0, 0, 160, 85, 0],
 				data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()],
-				/!*motion: function motion(points, data) {
+				/*motion: function motion(points, data) {
 				 points.forEach(function (item, index) {
 				 points[index] += data[index]
 				 })
-				 }*!/
+				 }*/
 			},
 			{
-				color: '#00FF00',
+				color: '#b133ff',
 				points: [85, 0, 100, 160, 170, 0, 170, 0],
-			}*/
+			}
 		],
 		s: [
-			/*{
-				color: '#00FF00',
+			{
+				color: '#be39cb',
 				points: [-40, 40, -10, 30, 0, 0],
 			},
 			{
-				color: '#00FF00',
+				color: '#be39cb',
 				points: [0, 0, -35, 55, 20, 55, 10, 85],
 			},
 			{
-				color: '#00FF00',
+				color: '#be39cb',
 				points: [10, 85, 0, 110, -15, 105, -25, 100],
 			},
 			{
-				color: '#00FF00',
+				color: '#be39cb',
 				points: [-15, 105, 20, 107, 30, 80],
-			},*/
+			},
 		],
 		num5: [
-			/*{
+			{
 				color: '#00FF00',
 				points: [0, 0, 25, 10, 60, -10, 85, 0],
 			},
@@ -137,10 +148,10 @@
 			{
 				color: '#00FF00',
 				points: [-5, 50, 120, 20, 120, 150, 5, 150],
-			}*/
+			}
 		],
 		num2: [
-			/*{
+			{
 				color: '#00FF00',
 				points: [0, 0, -10, 10, 30, 30, 10, -20],
 			},
@@ -151,126 +162,130 @@
 			{
 				color: '#00FF00',
 				points: [10, 95, -20, 130, 30, 105, 85, 105],
-			}*/
+			}
 		],
 		num0: [
-			/*{
-				color: '#00FF00',
-				points: [75,40,75,37,70,25,50,25],
+			{
+				color: '#ff3a45',
+				points: [75, 40, 75, 37, 70, 25, 50, 25],
 				motion: function () {
 					dance(this, 1.25)
 				}
 			},
 			{
-				color: '#00FF00',
-				points: [50,25,20,25,20,62.5,20,62.5],
+				color: '#ff3a45',
+				points: [50, 25, 20, 25, 20, 62.5, 20, 62.5],
 				motion: function () {
 					dance(this, 1.25)
 				}
 			},
 			{
-				color: '#00FF00',
-				points: [20,62.5,20,80,40,102,75,120],
+				color: '#ff3a45',
+				points: [20, 62.5, 20, 80, 40, 102, 75, 120],
 				motion: function () {
 					dance(this, 1.25)
 				}
 			},
 			{
-				color: '#00FF00',
-				points: [75,120,110,102,130,80,130,62.5],
+				color: '#ff3a45',
+				points: [75, 120, 110, 102, 130, 80, 130, 62.5],
 				motion: function () {
 					dance(this, 1.25)
 				}
 			},
 			{
-				color: '#00FF00',
-				points: [130,62.5,130,62.5,130,25,100,25],
+				color: '#ff3a45',
+				points: [130, 62.5, 130, 62.5, 130, 25, 100, 25],
 				motion: function () {
 					dance(this, 1.25)
 				}
 			},
 			{
-				color: '#00FF00',
-				points: [100,25,85,25,75,37,75,40],
+				color: '#ff3a45',
+				points: [100, 25, 85, 25, 75, 37, 75, 40],
 				motion: function () {
 					dance(this, 1.25)
 				}
-			},*/
+			},
 		],
 		dot: [
-			/*{
-				color: '#00FF00',
-				points: [0,0,1,1,1,1,1,1],
+			{
+				color: '#00fff4',
+				points: [0, 0, 1, 1, 1, 1, 1, 1],
 				motion: motion.dance,
-				data: {angle: 0, r: 5 ,step: Math.PI / 20 }
-			}*/
+				data: {angle: 0, r: 10, step: Math.PI / 10}
+			}
 		]
 	};
 
 	var flower = {
-		colors: ['#FFBBFF', '#EEEED1', '#E0FFFF'],
-		points: [
-			{
-				color: '#00FF00',
-				points: [0, 0, -10, 0, -10, 50, 0, 50],
-				motion: motion.rotate,
-				data: Math.PI / 3
-			},
-			{
-				color: '#00FF00',
-				points: [0, 0, 10, 0, 10, 50, 0, 50],
-				motion: motion.rotate,
-				data: Math.PI / 3
-			}
-		],
-		generate: function () {
-			var color = this.colors[Math.floor(Math.random() * 3)],
-					xOffset = Math.random() * canvasWidth,
-					yOffset = Math.random() * canvasHeight;
-			var t = [
+			colors: ['#FFBBFF', '#EEEED1', '#E0FFFF'],
+			points: [
 				{
-					color: color,
-					points: [0, 0, -10, 0, -10, 50, 0, 50].map(function (o, index) {
-						return index % 2 == 0 ? o += xOffset : o += yOffset
-					}),
+					color: '#00FF00',
+					points: [0, 0, -10, 0, -10, 50, 0, 50],
 					motion: motion.rotate,
 					data: Math.PI / 3
 				},
 				{
-					color: color,
-					points: [0, 0, 10, 0, 10, 50, 0, 50].map(function (o, index) {
-						return index % 2 == 0 ? o += xOffset : o += yOffset
-					}),
+					color: '#00FF00',
+					points: [0, 0, 10, 0, 10, 50, 0, 50],
 					motion: motion.rotate,
 					data: Math.PI / 3
 				}
-			];
-			return t;
-		}
-	},
+			],
+			generate: function () {
+				var color = this.colors[Math.floor(Math.random() * 3)],
+					xOffset = Math.random() * canvasWidth,
+					yOffset = Math.random() * canvasHeight;
+				var t = [
+					{
+						color: color,
+						points: [0, 0, -10, 0, -10, 50, 0, 50].map(function (o, index) {
+							return index % 2 == 0 ? o += xOffset : o += yOffset
+						}),
+						motion: motion.rotate,
+						data: Math.PI / 3
+					},
+					{
+						color: color,
+						points: [0, 0, 10, 0, 10, 50, 0, 50].map(function (o, index) {
+							return index % 2 == 0 ? o += xOffset : o += yOffset
+						}),
+						motion: motion.rotate,
+						data: Math.PI / 3
+					}
+				];
+				return t;
+			}
+		},
 		flowers = [];
 
 	(function () {
 		var offset = {
 			w: {
-				x: 120,
+				x: 140,
 				y: 650
 			},
 			s: {
-				x: 400,
+				x: 420,
 				y: 615
 			},
 			num5: {
-				x: 300,
+				x: 100,
 				y: 300
 			},
 			num2: {
-				x: 300,
+				x: 280,
+				y: 340
+			},
+			num0: {
+				x: 400,
 				y: 300
 			},
 			dot: {
-				x: 100,
-				y: 100
+				x: 220,
+				y: 430
 			}
 		};
 
@@ -297,15 +312,18 @@
 
 	var data = [];
 	for (var o in dataset) {
-		dataset[o].forEach(function (o) {
-			data.push(new Curve(o))
-		})
+		var _matchStr = 'num5dotnum2';
+		if (!_matchStr.includes(o)) {
+			dataset[o].forEach(function (o) {
+				data.push(new Curve(o))
+			})
+		}
 	}
 
 
-	for (var o in data) {
-		stage.add(data[o])
-	}
+	//	for (var o in data) {
+	//		stage.add(data[o])
+	//	}
 	/*stage.add(new curvejs.Word('h',{
 	 color: '#22CAB3',
 	 motion: curvejs.motion.dance,
@@ -337,10 +355,10 @@
 	}
 
 
-	var lineCount = 6,
-			random = util.random,
-			randomColor = util.randomColor,
-			randomSpeed = util.randomSpeed;
+	var lineCount = 7,
+		random = util.random,
+		randomColor = util.randomColor,
+		randomSpeed = util.randomSpeed;
 
 	for (var i = 0; i < lineCount; i++) {
 		stage.add(new Curve({
@@ -373,31 +391,29 @@
 	tick()
 
 	/*setTimeout(function () {
-		stage.children.forEach(function (child, index) {
-			child.pointsTo(dataset['num0'][index]['points'], 2000, {
-				end: function () {
-					dance(this, 1.25)
-				}
-			})
-		})
-	}, 2000)*/
+	 stage.children.forEach(function (child, index) {
+	 child.pointsTo(dataset['num0'][index]['points'], 2000, {
+	 end: function () {
+	 dance(this, 1.25)
+	 }
+	 })
+	 })
+	 }, 2000)*/
 </script>
 <script>
-	//shakeHandler
-	function shakeHandler() {
-//		if (curveActingFlag) return;
-		alert("你中奖啦！");  // Do something
-	}
-</script>
-<script>
-	function heartMotion () {
+	function heartMotion() {
 
 		stage.children.forEach(function (child) {
 			dance(child, 1.25)
 		})
 	}
 
-	function flowerController () {
+	var flowerStartFlag = false;
+	function flowerController() {
+		if (flowerStartFlag) return;
+		flowerStartFlag = true;
+
+		actingTitle();
 		setInterval(function () {
 			var array = flower.generate();
 			var cArray = [new Curve(array[0]), new Curve(array[1])];
@@ -405,7 +421,7 @@
 			_a(cArray[0])
 			_a(cArray[1])
 
-		}, 1000)
+		}, 4000)
 
 		function _a(_flower) {
 			flowers.push(_flower);
@@ -413,16 +429,17 @@
 
 			(function () {
 				var percent = 0,
-						delay = 50;
+					delay = 50,
+					color = _flower.color;
 				setTimeout(acting, delay)
 
-				function acting () {
+				function acting() {
 					if (percent >= 100) {
 						removeElement(_flower, flowers);
-						removeElement(_flower, stage);
+						removeElement(_flower, stage.children);
 						return
 					}
-					_flower.color = curvejs.color.lerp('red', '#1e1d23', percent)
+					_flower.color = curvejs.color.lerp(color, '#1e1d23', percent)
 					percent += 1;
 					setTimeout(acting, delay)
 				}
@@ -432,13 +449,55 @@
 
 	}
 
-	function removeElement (ele, array) {
+	function removeElement(ele, array) {
 		for (var i = 0, length = array.length; i < length; i++) {
 			if (array[i] === ele) array.splice(i, 1);
 		}
 	}
 
-	flowerController()
+//	flowerController()
+
+	var stageWordIndex = 0,
+		stageChildIndex = 0;
+	function makeWord() {
+		curveActingFlag = true;
+		var keys = ['num5', 'dot', 'num2'];
+		if (stageWordIndex >= keys.length) return;
+
+		var key = keys[stageWordIndex++],
+			length = dataset[key].length;
+
+		for (var i = 0; i < length; i++) {
+			(function (_index, _i) {
+				var ele = stage.children[_index];
+				ele.pointsTo(dataset[key][_i]['points'], 2000, {
+					end: function () {
+						curveActingFlag = false;
+						if (key == 'dot') {
+							removeElement(ele, stage.children);
+							stage.children.unshift(new Curve(dataset['dot'][0]))
+						}
+						if (key == 'num2') {
+							for (var o in data) {
+								stage.add(data[o])
+								flowerController()
+							}
+						}
+					}
+				})
+			})(stageChildIndex++, i)
+		}
+	}
+
+	(function () {
+		setTimeout(function () {
+			if (!hasShaked) document.title = '摇一下~';
+		}, 5000)
+	})()
+
+	function actingTitle () {
+		document.title = "喜欢吗";
+	}
 </script>
 </body>
 </html>
