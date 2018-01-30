@@ -63,7 +63,7 @@
 				if (speed > SHAKE_THRESHOLD) {
 					shakeHandler();
 				}
-				console.log(speed)
+//				console.log(speed)
 				last_x = x;
 				last_y = y;
 				last_z = z;
@@ -492,7 +492,7 @@
 	(function () {
 		setTimeout(function () {
 			if (!hasShaked) document.title = '摇一下~';
-		}, 5000)
+		}, 50 * 1e3)
 	})()
 
 	function actingTitle () {
