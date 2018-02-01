@@ -1,0 +1,29 @@
+{
+  "name": "pps",
+  "version": "1.0.0",
+  "description": "under construction project",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diyews/pps.git"
+  },
+  "keywords": [
+    "pps"
+  ],
+  "author": "diye",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diyews/pps/issues"
+  },
+  "homepage": "https://github.com/diyews/pps#readme",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "browserify": "^14.1.0"
+  }
+}
